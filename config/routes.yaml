@@ -1,3 +1,0 @@
-get_students:
-  path: /students
-  controller: App\Controller\Student\GetStudentsController

@@ -4,23 +4,48 @@ declare(strict_types=1);
 
 namespace App\Student\Domain;
 
-class Student
+use App\Common\Domain\Aggregate;
+
+class Student extends Aggregate
 {
     private string $id;
     private string $name;
     private string $surname1;
     private string $email;
-    private ?string $surname2;
     private ?string $phoneNumber;
+    private ?string $surname2;
 
-    public function __construct(string $id, string $name, string $surname1, string $email, ?string $surname2, ?string $phoneNumber)
-    {
+    public function __construct(
+        string $id,
+        string $name,
+        string $surname1,
+        string $email,
+        ?string $phoneNumber,
+        ?string $surname2
+    ) {
         $this->id = $id;
         $this->name = $name;
         $this->surname1 = $surname1;
         $this->email = $email;
-        $this->surname2 = $surname2;
         $this->phoneNumber = $phoneNumber;
+        $this->surname2 = $surname2;
+    }
+
+    public static function create(
+        string $name,
+        string $surname1,
+        string $email,
+        ?string $phoneNumber,
+        ?string $surname2
+    ): self {
+        return new self(
+            self::uuid(),
+            $name,
+            $surname1,
+            $email,
+            $phoneNumber,
+            $surname2
+        );
     }
 
     public function id(): string

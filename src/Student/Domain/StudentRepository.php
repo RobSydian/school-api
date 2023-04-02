@@ -8,4 +8,6 @@ interface StudentRepository
 {
     /** @return Student[] */
     public function findAll();
+
+    public function save(Student $student): void;
 }

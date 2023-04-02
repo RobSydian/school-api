@@ -25,6 +25,17 @@ class MySqlStudentRepository implements StudentRepository
         return $students ? $this->hydrate($students) : [];
     }
 
+    public function save(Student $student): void
+    {
+        $this->connection->executeQuery(
+            <<<SQL
+                INSERT INTO student (id, name, surname1, surname2, email, phone_number)
+                VALUES(?, ?, ?, ?, ?, ?);
+            SQL,
+            [$student->id(), $student->name(), $student->surname1(), $student->surname2(), $student->email(), $student->phoneNumber() ]
+        );
+    }
+
     /** @return Student[] */
     private function hydrate(array $students)
     {
@@ -33,8 +44,8 @@ class MySqlStudentRepository implements StudentRepository
             $row['name'],
             $row['surname1'],
             $row['email'],
-            $row['surname2'],
             $row['phone_number'],
+            $row['surname2'],
         ), $students);
     }
 }

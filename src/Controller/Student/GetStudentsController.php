@@ -6,9 +6,11 @@ namespace App\Controller\Student;
 
 use App\Student\Application\GetStudents;
 use App\Student\Application\GetStudentsQuery;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Routing\Annotation\Route;
 
-class GetStudentsController
+class GetStudentsController extends AbstractController
 {
     private GetStudents $getStudents;
 
@@ -17,6 +19,9 @@ class GetStudentsController
         $this->getStudents = $getStudents;
     }
 
+    /**
+     * @Route("/students", name="get_students",  methods={"GET"})
+     */
     public function __invoke(): JsonResponse
     {
         $students = $this->getStudents->handle(new GetStudentsQuery());

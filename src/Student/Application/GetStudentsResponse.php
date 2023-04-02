@@ -27,10 +27,10 @@ class GetStudentsResponse
     {
         return array_map(fn (Student $student) => [
             'id' => $student->id(),
-            'name' => $student->email(),
+            'name' => $student->name(),
             'surname1' => $student->surname1(),
-            'email' => $student->email(),
             'surname2' => $student->surname2(),
+            'email' => $student->email(),
             'phoneNumber' => $student->phoneNumber(),
         ], $this->students);
     }
