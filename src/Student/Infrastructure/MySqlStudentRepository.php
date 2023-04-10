@@ -20,9 +20,27 @@ class MySqlStudentRepository implements StudentRepository
     /** @return Student[] */
     public function findAll()
     {
-        $students = $this->connection->fetchAllAssociative('SELECT * FROM student');
+        $students = $this->connection->fetchAllAssociative(<<<SQL
+            SELECT * FROM student
+        SQL);
 
-        return $students ? $this->hydrate($students) : [];
+        if (!$students) {
+            return [];
+        }
+
+        return array_map(fn ($student) => $this->hydrate($student), $students);
+    }
+
+    public function findById(string $id): ?Student
+    {
+        $student = $this->connection->fetchAssociative(
+            <<<SQL
+                SELECT * FROM student WHERE id = ?
+            SQL,
+            [$id]
+        );
+
+        return $student ? $this->hydrate($student) : null;
     }
 
     public function save(Student $student): void
@@ -36,16 +54,28 @@ class MySqlStudentRepository implements StudentRepository
         );
     }
 
-    /** @return Student[] */
-    private function hydrate(array $students)
+    public function update(Student $student): void
     {
-        return array_map(fn ($row) => new Student(
-            $row['id'],
-            $row['name'],
-            $row['surname1'],
-            $row['email'],
-            $row['phone_number'],
-            $row['surname2'],
-        ), $students);
+        $this->connection->executeQuery(
+            <<<SQL
+                UPDATE student
+                SET name = ?, surname1 = ?, surname2 = ?, email = ?, phone_number = ?
+                WHERE id = ?;
+            SQL,
+            [$student->name(), $student->surname1(), $student->surname2(), $student->email(), $student->phoneNumber(), $student->id() ]
+        );
+    }
+
+    /** @return Student */
+    private function hydrate(array $student)
+    {
+        return new Student(
+            $student['id'],
+            $student['name'],
+            $student['surname1'],
+            $student['email'],
+            $student['phone_number'],
+            $student['surname2'],
+        );
     }
 }
