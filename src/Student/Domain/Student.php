@@ -48,6 +48,23 @@ class Student extends Aggregate
         );
     }
 
+    public function update(
+        ?string $name,
+        ?string $surname1,
+        ?string $email,
+        ?string $phoneNumber,
+        ?string $surname2
+    ): self {
+        return new self(
+            $this->id,
+            $name ?? $this->name,
+            $surname1 ?? $this->surname1,
+            $email ?? $this->email,
+            $phoneNumber ?? $this->phoneNumber,
+            $surname2 ?? $this->surname2
+        );
+    }
+
     public function id(): string
     {
         return $this->id;

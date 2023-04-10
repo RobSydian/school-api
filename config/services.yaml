@@ -42,12 +42,19 @@ services:
     arguments:
       - '@App\Student\Application\CreateStudent'
     tags: ["controller.service_arguments"]
+  App\Controller\Student\UpdateStudentController:
+    arguments:
+      - '@App\Student\Application\UpdateStudent'
+    tags: ["controller.service_arguments"]
 
   ############ USE CASES ##############
   App\Student\Application\GetStudents:
     arguments:
       - '@App\Students\Infrastructure\MySqlStudentRepository'
   App\Student\Application\CreateStudent:
+    arguments:
+      - '@App\Students\Infrastructure\MySqlStudentRepository'
+  App\Student\Application\UpdateStudent:
     arguments:
       - '@App\Students\Infrastructure\MySqlStudentRepository'
 

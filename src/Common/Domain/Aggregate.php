@@ -8,7 +8,7 @@ use Ramsey\Uuid\Uuid;
 
 abstract class Aggregate
 {
-    public static function uuid(): string
+    protected static function uuid(): string
     {
         return Uuid::uuid4()->toString();
     }
